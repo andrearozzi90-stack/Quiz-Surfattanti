@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quiz – Inquinamento e Surfattanti</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ecfdf5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    .quiz {
+      background: #ffffff;
+      padding: 24px;
+      max-width: 520px;
+      width: 100%;
+      border-radius: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 1.4rem;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background: #f9fafb;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background: #f3f4f6;
+    }
+    .correct {
+      background: #22c55e !important;
+      color: white;
+      border-color: #22c55e;
+    }
+    .wrong {
+      background: #ef4444 !important;
+      color: white;
+      border-color: #ef4444;
+    }
+    .footer {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz" id="quiz"></div>
+
+<script>
+const questions = [
+  {
+    q: "1. Cosa sono i surfattanti?",
+    a: [
+      "Sostanze che aumentano il peso dell’acqua",
+      "Sostanze che aiutano a mescolare acqua e grasso",
+      "Tipi di plastica"
+    ],
+    c: 1
+  },
+  {
+    q: "2. Dove troviamo più spesso i surfattanti?",
+    a: [
+      "Nei carburanti",
+      "Nei detersivi e saponi",
+      "Nell’aria"
+    ],
+    c: 1
+  },
+  {
+    q: "3. Quale prodotto contiene quasi sempre surfattanti?",
+    a: [
+      "Carta",
+      "Detersivo per piatti",
+      "Acqua minerale"
+    ],
+    c: 1
+  },
+  {
+    q: "4. Perché possono contribuire all’inquinamento delle acque?",
+    a: [
+      "Perché evaporano facilmente",
+      "Perché possono essere tossici per gli organismi acquatici",
+      "Perché rendono l’acqua più salata"
+    ],
+    c: 1
+  },
+  {
+    q: "5. Cosa succede quando sono presenti in eccesso?",
+    a: [
+      "L’acqua diventa potabile",
+      "Aumenta la schiuma e diminuisce l’ossigeno",
+      "I pesci crescono più velocemente"
+    ],
+    c: 1
+  },
+  {
+    q: "6. I surfattanti servono soprattutto a:",
+    a: [
+      "Colorare i prodotti",
+      "Pulire e rimuovere lo sporco",
+      "Riscaldare l’acqua"
+    ],
+    c: 1
+  },
+  {
+    q: "7. Quale ambiente è più sensibile ai surfattanti?",
+    a: [
+      "Ambienti desertici",
+      "Ambienti acquatici",
+      "Zone montane"
+    ],
+    c: 1
+  },
+  {
+    q: "8. A cosa servono gli impianti di depurazione?",
+    a: [
+      "Aggiungere sostanze all’acqua",
+      "Rimuovere contaminanti dall’acqua",
+      "Raffreddare l’acqua"
+    ],
+    c: 1
+  },
+  {
+    q: "9. Usare troppo detersivo:",
+    a: [
+      "Migliora sempre la pulizia",
+      "Aumenta l’inquinamento",
+      "Non ha effetti"
+    ],
+    c: 1
+  },
+  {
+    q: "10. Qual è la scelta più sostenibile?",
+    a: [
+      "Prodotti ecologici e dosati correttamente",
+      "Prodotti molto schiumosi",
+      "Usare più prodotto possibile"
+    ],
+    c: 0
+  }
+];
+
+let current = 0;
+let score = 0;
+let answered = false;
+
+function render() {
+  const q = questions[current];
+  let html = `<h1>${q.q}</h1>`;
+  q.a.forEach((ans, i) => {
+    html += `<button onclick="answer(${i})">${ans}</button>`;
+  });
+  html += `<div class="footer">Domanda ${current + 1} di ${questions.length}</div>`;
+  document.getElementById("quiz").innerHTML = html;
+  answered = false;
+}
+
+function answer(i) {
+  if (answered) return;
+  answered = true;
+
+  const buttons = document.querySelectorAll("button");
+  buttons[questions[current].c].classList.add("correct");
+
+  if (i === questions[current].c) {
+    score++;
+  } else {
+    buttons[i].classList.add("wrong");
+  }
+
+  setTimeout(() => {
+    current++;
+    if (current < questions.length) {
+      render();
+    } else {
+      document.getElementById("quiz").innerHTML = `
+        <h1>Quiz completato ✅</h1>
+        <p>Hai risposto correttamente a <strong>${score}</strong> su <strong>${questions.length}</strong> domande.</p>
+        <button onclick="location.reload()">Ricomincia quiz</button>
+        <p class="footer">Anche piccoli gesti quotidiani aiutano a ridurre l’inquinamento 🌍</p>
+      `;
+    }
+  }, 900);
+}
+
+render();
+</script>
+
+</body>
+</html>
